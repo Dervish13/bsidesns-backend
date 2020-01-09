@@ -1,0 +1,5 @@
+bcrypt
+freenit
+gunicorn
+psycopg2
+unidecode

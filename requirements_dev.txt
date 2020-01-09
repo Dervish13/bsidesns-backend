@@ -1,0 +1,6 @@
+factory-boy
+flake8
+ipdb
+pytest-cov
+pytest-factoryboy
+pytest-flask
