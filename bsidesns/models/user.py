@@ -3,6 +3,7 @@ from freenit.models.user import User as BaseUser
 
 
 class User(BaseUser):
+    avatar = peewee.TextField(null=True)
     bio = peewee.TextField(null=True)
     facebook = peewee.TextField(null=True)
     firstName = peewee.TextField(null=True)

@@ -29,10 +29,7 @@ class GalleryAlbumListAPI(MethodView):
     def get(self, pagination, year=None):
         """Get list of albums"""
         if year is None:
-            return paginate(
-                GalleryAlbum.select().where(GalleryAlbum.event),
-                pagination,
-            )
+            return paginate(GalleryAlbum.select(), pagination)
         try:
             event = Event.get(year=year)
         except Event.DoesNotExist:
@@ -131,10 +128,13 @@ class GalleryAlbumAPI(MethodView):
                     album=album,
                     filename=secure_filename(uploadFile.filename),
                 )
-            file_dir = f'{media_path}/{event.year}/{album.name}'
+            if event is None:
+                file_dir = f'{media_path}/{album.name}'
+            else:
+                file_dir = f'{media_path}/{event.year}/{album.name}'
             if not os.path.exists(file_dir):
                 os.makedirs(file_dir)
-            finalPath = finalFile.path(prefix=media_path)
+            finalPath = finalFile.url(prefix=media_path)
             os.rename(tempfile, finalPath)
             os.chmod(finalPath, 0o644)
             finalFile.save()
