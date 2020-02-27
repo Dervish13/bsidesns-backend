@@ -20,6 +20,7 @@ def migrate(migrator, database, fake=False, **kwargs):
         confirmed_at = pw.DateTimeField(null=True)
         email = pw.TextField(unique=True)
         password = pw.TextField()
+        avatar = pw.TextField(null=True)
         bio = pw.TextField(null=True)
         facebook = pw.TextField(null=True)
         firstName = pw.TextField(null=True)

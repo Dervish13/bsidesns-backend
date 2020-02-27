@@ -13,3 +13,4 @@ fi
 
 
 flask admin create
+flask gallery create

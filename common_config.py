@@ -5,11 +5,12 @@ from name import app_name
 #  from datetime import timedelta
 
 SECRET_KEY = 'iQfPvB6sZaNHqVFI5CJa9rM1xOEVHKIM0LwifT04yLsPlZhSSvaDuZXOgJFSpJVq'
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 class Config:
     NAME = app_name
-    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+    PROJECT_ROOT = PROJECT_ROOT
     DEBUG = False
     SECURITY_PASSWORD_SALT = 'tilda'
     SECRET_KEY = SECRET_KEY
@@ -28,7 +29,7 @@ class Config:
     OPENAPI_SWAGGER_UI_URL = '/static/swaggerui/'
     OPENAPI_VERSION = '2.0.0'
     MEDIA_URL = '/media'
-    MEDIA_PATH = 'media'
+    MEDIA_PATH = f'{PROJECT_ROOT}/media'
     DATABASE = {
         'name': 'database.db',
         'engine': 'SqliteDatabase',
