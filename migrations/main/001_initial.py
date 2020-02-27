@@ -21,7 +21,7 @@ def migrate(migrator, database, fake=False, **kwargs):
         email = pw.TextField(unique=True)
         password = pw.TextField()
         avatar = pw.TextField(null=True)
-        bio = pw.TextField(null=True)
+        biography = pw.TextField(null=True)
         facebook = pw.TextField(null=True)
         firstName = pw.TextField(null=True)
         lastName = pw.TextField(null=True)

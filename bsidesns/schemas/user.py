@@ -4,7 +4,7 @@ from marshmallow import fields
 
 class UserSchema(BaseUserSchema):
     avatar = fields.String()
-    bio = fields.String()
+    biography = fields.String()
     facebook = fields.String()
     firstName = fields.String()
     lastName = fields.String()
