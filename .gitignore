@@ -17,5 +17,5 @@ test.db
 vars.mk
 project.mk
 local_config.py
-media/*/*
-!media/tmp/.keep
+media/*
+!media/.keep

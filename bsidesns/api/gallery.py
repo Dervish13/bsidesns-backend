@@ -1,5 +1,5 @@
 import os
-from tempfile import NamedTemporaryFile
+import shutil
 
 from flask import current_app
 from flask.views import MethodView
@@ -17,8 +17,6 @@ from ..schemas.gallery import (
 )
 
 blueprint = Blueprint('gallery', 'gallery')
-
-chunks = {}
 
 
 @blueprint.route('', endpoint='albums')
@@ -86,43 +84,25 @@ class GalleryAlbumAPI(MethodView):
             abort(409, message='Backend misconfiguration, no MEDIAL_URL')
         uploadFile = fileargs['file']
         chunkNumber = formargs['resumableChunkNumber']
+        chunkSize = formargs['resumableChunkSize']
+        total = formargs['resumableTotalChunks']
         identifier = formargs['resumableIdentifier']
-        fileEntry = chunks.get(identifier, None)
         media_path = os.path.abspath(
             current_app.config.get(
                 'MEDIA_PATH',
                 None,
             )
         )
-        if fileEntry is None:
-            tempfile = NamedTemporaryFile(
-                dir=f'{media_path}/tmp',
-                delete=False
-            )
-            tempfile.close()
-            fileEntry = {
-                'chunkSize': formargs['resumableChunkSize'],
-                'filename': formargs['resumableFilename'],
-                'identifier': identifier,
-                'temp': tempfile.name,
-                'total': formargs['resumableTotalChunks'],
-                'type': formargs['resumableType'],
-            }
-            chunks[identifier] = fileEntry
-            uploadFile.save(fileEntry['temp'])
-        else:
-            with open(fileEntry['temp'], 'ab') as tempfile:
-                offset = (chunkNumber - 1) * fileEntry['chunkSize']
-                tempfile.seek(offset)
-                tempfile.write(uploadFile.read())
-
-        if chunkNumber == fileEntry['total']:
-            tempfile = fileEntry['temp']
+        filePath = f'/tmp/{identifier}'
+        with open(filePath, 'ab') as tempfile:
+            offset = (chunkNumber - 1) * chunkSize
+            tempfile.seek(offset)
+            tempfile.write(uploadFile.read())
+        if chunkNumber == total:
             try:
-                finalFile = GalleryFile.get(
-                    album=album,
-                    filename=secure_filename(uploadFile.filename),
-                )
+                filename = secure_filename(uploadFile.filename)
+                formargs['resumableFilename'] = filename
+                finalFile = GalleryFile.get(album=album, filename=filename)
             except GalleryFile.DoesNotExist:
                 finalFile = GalleryFile(
                     album=album,
@@ -135,7 +115,7 @@ class GalleryAlbumAPI(MethodView):
             if not os.path.exists(file_dir):
                 os.makedirs(file_dir)
             finalPath = finalFile.url(prefix=media_path)
-            os.rename(tempfile, finalPath)
+            shutil.move(filePath, finalPath)
             os.chmod(finalPath, 0o644)
             finalFile.save()
         return formargs
