@@ -10,3 +10,6 @@ if [ "${OFFLINE}" = "yes" ]; then
 else
   setup
 fi
+flask migration run
+flask admin create
+flask gallery create
