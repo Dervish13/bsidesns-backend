@@ -2,12 +2,11 @@ import datetime
 import re
 
 from freenit.db import db
-from freenit.models.user import User
+from peewee import BooleanField, DateTimeField, ForeignKeyField, TextField
 from unidecode import unidecode
 
-from peewee import BooleanField, DateTimeField, ForeignKeyField, TextField
-
 from ..date import datetime_format
+from .user import User
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 Model = db.Model

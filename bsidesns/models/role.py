@@ -1,8 +1,5 @@
-import peewee
-from freenit.models.role import Role as BaseRole
-from freenit.models.role import UserRoles as BaseUserRoles
-
-from .user import User
+from freenit.models.sql.role import Role as BaseRole
+from freenit.models.sql.role import UserRoles as BaseUserRoles
 
 
 class Role(BaseRole):
@@ -10,5 +7,4 @@ class Role(BaseRole):
 
 
 class UserRoles(BaseUserRoles):
-    role = peewee.ForeignKeyField(Role, backref='users')
-    user = peewee.ForeignKeyField(User, backref='roles')
+    pass

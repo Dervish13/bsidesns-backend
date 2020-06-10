@@ -1,11 +1,11 @@
 from flask_jwt_extended import get_jwt_identity, jwt_optional, jwt_required
 from flask_smorest import Blueprint, abort
 from freenit.api.methodviews import ProtectedMethodView
-from freenit.models.user import User
 from freenit.schemas.paging import PageInSchema, paginate
 
 from ..models.event import Event
 from ..models.ticket import Ticket
+from ..models.user import User
 from ..schemas.ticket import TicketPageOutSchema, TicketSchema
 
 blueprint = Blueprint('tickets', 'tickets')

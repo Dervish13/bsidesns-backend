@@ -1,11 +1,11 @@
 from flask.views import MethodView
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_smorest import Blueprint, abort
-from freenit.models.user import User
 from freenit.schemas.paging import PageInSchema, paginate
 
 from ..models.event import Event
 from ..models.hall import Hall
+from ..models.user import User
 from ..schemas.hall import HallPageOutSchema, HallSchema
 
 blueprint = Blueprint('halls', 'halls')

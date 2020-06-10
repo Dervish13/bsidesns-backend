@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from freenit.api.methodviews import MethodView
-from freenit.schemas.paging import PageInSchema, paginate
 from flask_jwt_extended import get_jwt_identity, jwt_optional, jwt_required
 from flask_smorest import Blueprint, abort
-from freenit.models.user import User
+from freenit.api.methodviews import MethodView
+from freenit.schemas.paging import PageInSchema, paginate
 
 from ..models.blog import Blog
+from ..models.user import User
 from ..schemas.blog import BlogPageOutSchema, BlogSchema
 
 blueprint = Blueprint('blogs', 'blogs')

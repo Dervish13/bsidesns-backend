@@ -3,13 +3,12 @@ from flask.views import MethodView
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_mail import Message
 from flask_smorest import Blueprint, abort
-from peewee import fn
-
 from freenit.schemas.paging import PageInSchema, paginate
-from freenit.models.user import User
+from peewee import fn
 
 from ..models.cfs import CfS
 from ..models.event import Event
+from ..models.user import User
 from ..schemas.cfs import CfSPageOutSchema, CfSSchema
 
 blueprint = Blueprint('cfs', 'cfs')

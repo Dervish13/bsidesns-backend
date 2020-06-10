@@ -4,11 +4,11 @@ from flask import current_app
 from flask_jwt_extended import get_jwt_identity
 from flask_smorest import Blueprint, abort
 from freenit.api.methodviews import ProtectedMethodView
-from freenit.models.user import User
 
 from ..models.cfp import CfP
 from ..models.event import Event
 from ..models.talk import Talk
+from ..models.user import User
 from ..schemas.cfp import CfPSchema
 from ..schemas.talk import TalkSchema
 
