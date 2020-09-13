@@ -10,6 +10,8 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 class Config:
     NAME = app_name
+    API_TITLE = 'BSidesNS'
+    API_VERSION = '0'
     PROJECT_ROOT = PROJECT_ROOT
     DEBUG = False
     SECURITY_PASSWORD_SALT = 'tilda'
