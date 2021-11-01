@@ -1,5 +1,1 @@
-bcrypt
-freenit[sql]
-gunicorn
-psycopg2
 unidecode

@@ -1,54 +1,35 @@
 import datetime
 import re
 
-from freenit.db import db
-from peewee import BooleanField, DateTimeField, ForeignKeyField, TextField
+import ormar
+from freenit.config import getConfig
+from freenit.models.base import BaseModel
+from freenit.models.user import UserModel
 from unidecode import unidecode
 
-from ..date import datetime_format
-from .user import User
+config = getConfig()
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
-Model = db.Model
 
 
-class Blog(Model):
-    author = ForeignKeyField(User, backref='blogs')
-    content = TextField()
-    date = DateTimeField(
-        formats=[datetime_format],
-        default=datetime.datetime.utcnow
-    )
-    published = BooleanField()
-    slug = TextField()
-    title = TextField()
+class Blog(BaseModel):
+    class Meta(config.meta):
+        pass
 
-    def save(self, *args, **kwargs):
-        if self.slug is None:
-            result = []
-            for word in _punct_re.split(self.title.lower()):
-                result.extend(unidecode(word).split())
-            self.slug = '-'.join(result)
-        super(Blog, self).save(*args, **kwargs)
+    id: int = ormar.Integer(primary_key=True)
+    author: UserModel = ormar.ForeignKey(UserModel)
+    content: str = ormar.Text()
+    published: bool = ormar.Boolean()
+    slug: str = ormar.String(max_length=200, nullable=True)
+    title: str = ormar.String(max_length=200)
+    date: datetime.date = ormar.DateTime(default=datetime.datetime.now)
 
-    @classmethod
-    def find(cls, year, month, day, slug):
-        intyear = int(year)
-        intmonth = int(month)
-        intday = int(day)
-        startdate_query = Blog.select().where(
-            Blog.date >= datetime.date(intyear,
-                                       intmonth,
-                                       intday)
-        )
-        enddate_query = startdate_query.where(
-            Blog.date < datetime.date(intyear,
-                                      intmonth,
-                                      intday + 1)
-        )
-        query = enddate_query.where(Blog.slug == slug)
-        if query.count() == 0:
-            raise cls.DoesNotExist
-        if query.count() > 1:
-            raise ValueError('Too many instances')
-        return query[0]
+
+@ormar.pre_save(Blog)
+async def save(sender, *args, **kwargs):
+    blog = kwargs.get("instance")
+    if blog.slug is None:
+        result = []
+        for word in _punct_re.split(blog.title.lower()):
+            result.extend(unidecode(word).split())
+        blog.slug = "-".join(result)

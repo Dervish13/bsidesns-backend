@@ -1,32 +1,17 @@
-from importlib import import_module
-
-from flask_security.utils import hash_password
-
 import factory
-from name import app_name
 
-user = import_module(f'{app_name}.models.user')
-role = import_module(f'{app_name}.models.role')
+from freenit.config import getConfig
+
+config = getConfig()
+auth = config.get_user()
+UserModel = auth.UserModel
 
 
 class UserFactory(factory.Factory):
     class Meta:
-        model = user.User
+        model = UserModel
 
-    first_name = factory.Faker('first_name')
-    last_name = factory.Faker('last_name')
-    email = factory.Faker('email')
-    password = factory.LazyAttribute(lambda a: hash_password('Sekrit'))
-    username = factory.Faker('name')
-    active = True
-
-
-class AdminFactory(UserFactory):
-    admin = True
-
-
-class RoleFactory(factory.Factory):
-    class Meta:
-        model = role.Role
-
-    name = factory.Faker('first_name')
+    id = factory.Faker("uuid4")
+    is_active = True
+    email = factory.Faker("email")
+    hashed_password = "Sekrit"
