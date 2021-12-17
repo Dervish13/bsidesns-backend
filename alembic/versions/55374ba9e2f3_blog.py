@@ -1,8 +1,8 @@
 """blog
 
-Revision ID: 390f37ec4c5c
+Revision ID: 55374ba9e2f3
 Revises: 4dd102097d35
-Create Date: 2021-11-01 22:08:49.256566
+Create Date: 2021-12-17 14:39:19.177213
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '390f37ec4c5c'
+revision = '55374ba9e2f3'
 down_revision = '4dd102097d35'
 branch_labels = None
 depends_on = None

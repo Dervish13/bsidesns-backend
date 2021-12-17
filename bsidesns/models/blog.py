@@ -5,6 +5,7 @@ import ormar
 from freenit.config import getConfig
 from freenit.models.base import BaseModel
 from freenit.models.user import UserModel
+from freenit.models.metaclass import AllOptional
 from unidecode import unidecode
 
 config = getConfig()
@@ -33,3 +34,7 @@ async def save(sender, *args, **kwargs):
         for word in _punct_re.split(blog.title.lower()):
             result.extend(unidecode(word).split())
         blog.slug = "-".join(result)
+
+
+class BlogOptional(Blog, metaclass=AllOptional):
+    pass
